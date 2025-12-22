@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- 
+        POS Configuration for Traffic Hawkers (FOTS Team)
+        
+        NOTE: This configuration requires:
+        1. Payment methods to be configured first (Cash, Mobile Money, etc.)
+        2. Chart of Accounts to be installed
+        3. POS Journal to be created
+        
+        It's recommended to create POS configurations via UI for better control:
+        - Go to: Point of Sale → Configuration → Point of Sale → Create
+        - Name: Traffic Hawkers (FOTS Team)
+        - Warehouse: Lagos HQ
+        - Enable mobile-friendly settings
+        -->
+        
+        <!-- 
+        <record id="pos_config_fots_team" model="pos.config">
+            <field name="name">Traffic Hawkers (FOTS Team)</field>
+            <field name="warehouse_id" ref="stock_modifier.warehouse_lagos_hq"/>
+            <field name="picking_type_id" ref="stock_modifier.warehouse_lagos_hq" eval="obj(ref('stock_modifier.warehouse_lagos_hq')).pos_type_id.id"/>
+            <field name="iface_big_scrollbars" eval="True"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="sequence">10</field>
+        </record>
+        -->
+        
+        <!-- 
+        IMPORTANT CONFIGURATION STEPS (via UI):
+        
+        1. Create POS Configuration:
+           - Point of Sale → Configuration → Point of Sale → Create
+           - Name: "Traffic Hawkers (FOTS Team)"
+           - Warehouse: Lagos HQ
+           
+        2. Payment Methods:
+           - Add Cash payment method
+           - Add Mobile Money payment method (if applicable)
+           
+        3. Mobile-Friendly Settings:
+           - Enable "Improve navigation for imprecise industrial touchscreens"
+           - Configure product categories for quick access
+           
+        4. User Assignment:
+           - Create POS Users for each Traffic Hawker
+           - Assign them to this POS configuration
+           - Set their default location to "Traffic Hawkers (FOTS Team)"
+        -->
+    </data>
+</odoo>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Sales Team: Field Sales Agents -->
+        <record id="team_field_sales_agents" model="crm.team">
+            <field name="name">Field Sales Agents</field>
+            <field name="sequence">10</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <!-- Sales Team: Student Ambassadors -->
+        <record id="team_student_ambassadors" model="crm.team">
+            <field name="name">Student Ambassadors</field>
+            <field name="sequence">20</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="active" eval="True"/>
+        </record>
+        
+        <!-- 
+        NOTE: Team members should be added via UI after user accounts are created.
+        Go to: Sales → Configuration → Sales Teams → [Select Team] → Add Members
+        -->
+    </data>
+</odoo>
