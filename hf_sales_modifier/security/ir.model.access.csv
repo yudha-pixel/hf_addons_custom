@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hf_marketing_sale_order,hf.marketing.sale.order,sale.model_sale_order,hf_sales_modifier.group_head_marketing_readonly,1,0,0,0
+access_hf_marketing_sale_order_line,hf.marketing.sale.order.line,sale.model_sale_order_line,hf_sales_modifier.group_head_marketing_readonly,1,0,0,0
+access_hf_marketing_account_move,hf.marketing.account.move,account.model_account_move,hf_sales_modifier.group_head_marketing_readonly,1,0,0,0
+access_hf_marketing_account_move_line,hf.marketing.account.move.line,account.model_account_move_line,hf_sales_modifier.group_head_marketing_readonly,1,0,0,0
+access_hf_marketing_stock_move_line,hf.marketing.stock.move.line,stock.model_stock_move_line,hf_sales_modifier.group_head_marketing_readonly,1,0,0,0

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="group_head_marketing_readonly" model="res.groups">
+        <field name="name">Head of Marketing (Read Only)</field>
+        <field name="sequence">15</field>
+        <field name="privilege_id" ref="sales_team.res_groups_privilege_sales"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_sale_orders_marketing_readonly" model="ir.actions.act_window">
+        <field name="name">Sales Orders</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="sale.sale_order_tree"/>
+        <field name="context">{'search_default_sales': 1, 'create': 0}</field>
+    </record>
+
+    <record id="action_customer_invoices_marketing_readonly" model="ir.actions.act_window">
+        <field name="name">Customer Invoices</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="account.view_out_invoice_tree"/>
+        <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        <field name="domain">[('move_type', 'in', ['out_invoice', 'out_refund', 'out_receipt'])]</field>
+        <field name="context">{'default_move_type': 'out_invoice', 'create': 0}</field>
+    </record>
+
+    <record id="action_moves_history_marketing_readonly" model="ir.actions.act_window">
+        <field name="name">Moves History</field>
+        <field name="res_model">stock.move.line</field>
+        <field name="view_mode">list,kanban,pivot,form</field>
+        <field name="view_id" ref="stock.view_move_line_tree"/>
+        <field name="search_view_id" ref="stock.stock_move_line_view_search"/>
+        <field name="context">{'search_default_done': 1, 'create': 0, 'pivot_measures': ['quantity_product_uom', '__count__']}</field>
+    </record>
+
+    <menuitem
+        id="menu_marketing_readonly_root"
+        name="Marketing"
+        parent="sale.sale_menu_root"
+        sequence="5"
+        groups="hf_sales_modifier.group_head_marketing_readonly"/>
+
+    <menuitem
+        id="menu_marketing_readonly_sales_orders"
+        name="Sales Orders"
+        parent="hf_sales_modifier.menu_marketing_readonly_root"
+        action="hf_sales_modifier.action_sale_orders_marketing_readonly"
+        sequence="10"
+        groups="hf_sales_modifier.group_head_marketing_readonly"/>
+
+    <menuitem
+        id="menu_marketing_readonly_customer_invoices"
+        name="Customer Invoices"
+        parent="hf_sales_modifier.menu_marketing_readonly_root"
+        action="hf_sales_modifier.action_customer_invoices_marketing_readonly"
+        sequence="20"
+        groups="hf_sales_modifier.group_head_marketing_readonly"/>
+
+    <menuitem
+        id="menu_marketing_readonly_moves_history"
+        name="Moves History"
+        parent="hf_sales_modifier.menu_marketing_readonly_root"
+        action="hf_sales_modifier.action_moves_history_marketing_readonly"
+        sequence="30"
+        groups="hf_sales_modifier.group_head_marketing_readonly"/>
+
+</odoo>
