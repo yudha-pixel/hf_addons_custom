@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+         Heritage Foods note:
+         We expose `rounding` on uom.uom so admins can tune precision
+         without entering developer mode. Rounding for 'Dozen' is DELIBERATELY
+         NOT forced to 1.0 at the UoM level: FOTS agents must be able to
+         return fractional dozens (e.g. 0.25 = 3 packs, 0.5 = 6 packs) via
+         the native Credit Note / Return Picking flow. The Dozen-only
+         constraint for outbound sales is enforced at action time inside
+         the FOTS `action_fots_buy_and_go` method, not globally.
+    -->
+
+    <!-- Add Rounding to UoM List View -->
+    <record id="product_uom_tree_view_hf" model="ir.ui.view">
+        <field name="name">uom.uom.list.hf</field>
+        <field name="model">uom.uom</field>
+        <field name="inherit_id" ref="uom.product_uom_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="relative_uom_id" position="after">
+                <field name="rounding"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Add Rounding to UoM Form View -->
+    <record id="product_uom_form_view_hf" model="ir.ui.view">
+        <field name="name">uom.uom.form.hf</field>
+        <field name="model">uom.uom</field>
+        <field name="inherit_id" ref="uom.product_uom_form_view"/>
+        <field name="arch" type="xml">
+            <div name="relative_factor" position="after">
+                <field name="rounding"/>
+            </div>
+        </field>
+    </record>
+</odoo>

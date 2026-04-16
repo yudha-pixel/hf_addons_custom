@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inject fots_agent_id into the sale.order form view -->
+    <record id="view_sale_order_form_fots" model="ir.ui.view">
+        <field name="name">sale.order.form.fots</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="fots_agent_id" options="{'no_create': True}"/>
+                <field name="fots_team_id" readonly="1" invisible="not fots_agent_id"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_fots_buy_and_go"
+                        type="object"
+                        string="Buy &amp; Go"
+                        class="oe_highlight"
+                        invisible="not fots_agent_id or state not in ('draft','sent')"
+                        groups="fots_deposit_manager.group_fots_user"
+                        help="Confirm the order, validate delivery, post the invoice, and register the payment in one click."/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inject fots_agent_id into the sale.order list view -->
+    <record id="view_sale_order_list_fots" model="ir.ui.view">
+        <field name="name">sale.order.list.fots</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="fots_agent_id" optional="show"/>
+                <field name="fots_team_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- FOTS-scoped sale.order action for analytics/agent view -->
+    <record id="action_fots_sale_orders" model="ir.actions.act_window">
+        <field name="name">Agent Sales Orders</field>
+        <field name="res_model">sale.order</field>
+        <field name="path">fots-sales-orders</field>
+        <field name="view_mode">list,pivot,graph,form</field>
+        <field name="domain">[('fots_agent_id', '!=', False)]</field>
+        <field name="context">{'group_by': ['fots_agent_id']}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No FOTS agent sales orders yet
+            </p>
+            <p>
+                Create a sales order and assign a FOTS agent to start tracking here.
+            </p>
+        </field>
+    </record>
+
+</odoo>

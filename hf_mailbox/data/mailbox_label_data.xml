@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="label_waiting_reply" model="hf.mailbox.label">
+            <field name="name">Waiting Reply</field>
+            <field name="system_key">waiting_reply</field>
+            <field name="color">4</field>
+            <field name="sequence">5</field>
+        </record>
+        <record id="label_followup" model="hf.mailbox.label">
+            <field name="name">Follow-up</field>
+            <field name="system_key">followup</field>
+            <field name="color">2</field>
+            <field name="sequence">6</field>
+        </record>
+        <record id="label_done" model="hf.mailbox.label">
+            <field name="name">Done</field>
+            <field name="system_key">done</field>
+            <field name="color">10</field>
+            <field name="sequence">90</field>
+        </record>
+
+        <record id="ir_config_followup_days" model="ir.config_parameter">
+            <field name="key">hf_mailbox.followup_days</field>
+            <field name="value">3</field>
+        </record>
+        <record id="ir_config_subject_match_days" model="ir.config_parameter">
+            <field name="key">hf_mailbox.subject_match_days</field>
+            <field name="value">30</field>
+        </record>
+
+    </data>
+</odoo>

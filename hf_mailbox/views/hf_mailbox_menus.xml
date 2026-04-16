@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_hf_mailbox_root"
+              name="Mailbox"
+              sequence="26"
+              web_icon="hf_mailbox,static/description/icon.png"/>
+
+    <menuitem id="menu_hf_mailbox_inbox"
+              name="Inbox"
+              parent="menu_hf_mailbox_root"
+              action="action_hf_mailbox_client"
+              sequence="10"/>
+
+    <menuitem id="menu_hf_mailbox_conversations"
+              name="All Conversations"
+              parent="menu_hf_mailbox_root"
+              action="action_hf_mailbox_thread"
+              sequence="20"/>
+
+    <menuitem id="menu_hf_mailbox_config"
+              name="Configuration"
+              parent="menu_hf_mailbox_root"
+              sequence="90"
+              groups="hf_mailbox.group_hf_mailbox_manager"/>
+
+    <menuitem id="menu_hf_mailbox_config_labels"
+              name="Labels"
+              parent="menu_hf_mailbox_config"
+              action="action_hf_mailbox_label"
+              sequence="10"/>
+
+    <menuitem id="menu_hf_mailbox_config_incoming"
+              name="Incoming Mail Servers"
+              parent="menu_hf_mailbox_config"
+              action="mail.action_email_server_tree"
+              sequence="20"/>
+
+    <menuitem id="menu_hf_mailbox_config_outgoing"
+              name="Outgoing Mail Servers"
+              parent="menu_hf_mailbox_config"
+              action="base.action_ir_mail_server_list"
+              sequence="30"/>
+
+    <menuitem id="menu_hf_mailbox_config_templates"
+              name="Email Templates"
+              parent="menu_hf_mailbox_config"
+              action="mail.action_email_template_tree_all"
+              sequence="40"/>
+
+</odoo>

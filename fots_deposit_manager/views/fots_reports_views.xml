@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_fots_agent_sales_pivot" model="ir.ui.view">
+        <field name="name">sale.order.fots.pivot</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <pivot string="FOTS Agent Sales">
+                <field name="fots_agent_id" type="row"/>
+                <field name="fots_team_id" type="row"/>
+                <field name="date_order" type="col" interval="month"/>
+                <field name="amount_untaxed" type="measure"/>
+                <field name="amount_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_fots_agent_sales_graph" model="ir.ui.view">
+        <field name="name">sale.order.fots.graph</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <graph string="FOTS Agent Sales" type="bar">
+                <field name="fots_agent_id" type="row"/>
+                <field name="amount_untaxed" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_fots_report_agent_sales" model="ir.actions.act_window">
+        <field name="name">Agent Sales Report</field>
+        <field name="res_model">sale.order</field>
+        <field name="path">agent-sales-report</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_fots_agent_sales_pivot')}),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_fots_agent_sales_graph')}),
+        ]"/>
+        <field name="domain">[('fots_agent_id', '!=', False)]</field>
+        <field name="context">{'search_default_group_fots_agent': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No FOTS agent sales yet
+            </p>
+            <p>
+                Analyze revenue per agent and per team over time.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_fots_report_team_performance" model="ir.actions.act_window">
+        <field name="name">Team Performance</field>
+        <field name="res_model">sale.order</field>
+        <field name="path">team-performance-report</field>
+        <field name="view_mode">pivot,graph</field>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'pivot', 'view_id': ref('view_fots_agent_sales_pivot')}),
+            (0, 0, {'view_mode': 'graph', 'view_id': ref('view_fots_agent_sales_graph')}),
+        ]"/>
+        <field name="domain">[('fots_team_id', '!=', False)]</field>
+        <field name="context">{'group_by': ['fots_team_id', 'fots_agent_id']}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No team sales data yet
+            </p>
+            <p>
+                Compare performance across teams and agents.
+            </p>
+        </field>
+    </record>
+
+</odoo>

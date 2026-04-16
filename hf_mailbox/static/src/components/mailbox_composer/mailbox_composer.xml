@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="hf_mailbox.MailboxComposer">
+        <div class="o_hf_mailbox_composer">
+            <div class="d-flex align-items-center mb-2 small text-muted">
+                <label class="form-check form-check-inline m-0">
+                    <input type="checkbox"
+                           class="form-check-input me-1"
+                           t-att-checked="state.internal"
+                           t-on-change="() => this.toggleInternal()"/>
+                    Internal note
+                </label>
+                <span class="ms-auto">Ctrl+Enter to send · Esc to cancel</span>
+            </div>
+            <textarea t-ref="textarea"
+                      class="form-control"
+                      t-att-class="state.internal ? 'border-warning bg-warning-subtle' : ''"
+                      t-att-disabled="props.disabled or state.sending"
+                      t-att-placeholder="props.disabled ? 'This conversation has no linked record — reply unavailable.' : (state.internal ? 'Write an internal note…' : 'Write a reply…')"
+                      t-att-value="state.body"
+                      t-on-input="onInput"
+                      t-on-keydown="onKeydown"/>
+            <div class="d-flex justify-content-end gap-2 mt-2">
+                <button class="btn btn-light"
+                        t-att-disabled="state.sending"
+                        t-on-click="() => this.cancel()">
+                    Cancel
+                </button>
+                <button class="btn btn-primary"
+                        t-att-disabled="props.disabled or state.sending or !state.body.trim()"
+                        t-on-click="() => this.send()">
+                    <i class="fa fa-paper-plane me-1" t-if="!state.internal"/>
+                    <i class="fa fa-sticky-note me-1" t-if="state.internal"/>
+                    <t t-if="state.sending">Sending…</t>
+                    <t t-else=""><t t-if="state.internal">Log Note</t><t t-else="">Send</t></t>
+                </button>
+            </div>
+        </div>
+    </t>
+
+</templates>

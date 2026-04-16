@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_fots_agent_list" model="ir.ui.view">
+        <field name="name">fots.agent.list</field>
+        <field name="model">fots.agent</field>
+        <field name="arch" type="xml">
+            <list string="FOTS Agents" decoration-muted="not active">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="phone"/>
+                <field name="team_id"/>
+                <field name="partner_id"/>
+                <field name="pricelist_id" optional="show"/>
+                <field name="sale_order_count" string="Orders"/>
+                <field name="active" widget="boolean_toggle" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_fots_agent_kanban" model="ir.ui.view">
+        <field name="name">fots.agent.kanban</field>
+        <field name="model">fots.agent</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="team_id"/>
+                <field name="partner_id"/>
+                <field name="pricelist_id"/>
+                <field name="sale_order_count"/>
+                <field name="active"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click">
+                            <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                            <div class="fw-bold fs-5">
+                                <field name="name"/>
+                            </div>
+                            <div class="text-muted" t-if="record.code.raw_value">
+                                <field name="code"/>
+                            </div>
+                            <div class="text-muted" t-if="record.team_id.raw_value">
+                                Team: <field name="team_id"/>
+                            </div>
+                            <div class="text-muted" t-if="record.partner_id.raw_value">
+                                Customer: <field name="partner_id"/>
+                            </div>
+                            <div class="text-muted" t-if="record.pricelist_id.raw_value">
+                                Pricelist: <field name="pricelist_id"/>
+                            </div>
+                            <div class="text-muted">
+                                Orders: <field name="sale_order_count"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_fots_agent_form" model="ir.ui.view">
+        <field name="name">fots.agent.form</field>
+        <field name="model">fots.agent</field>
+        <field name="arch" type="xml">
+            <form string="FOTS Agent">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_sale_orders" type="object" class="oe_stat_button" icon="fa-shopping-cart" invisible="not id">
+                            <field name="sale_order_count" widget="statinfo" string="Sales Orders"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Agent Name"/>
+                        </h1>
+                        <h3>
+                            <field name="code" readonly="1"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group string="Basic Information">
+                            <field name="team_id"/>
+                            <field name="user_id"/>
+                            <field name="partner_id"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                            <field name="pricelist_id"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group string="Address">
+                            <field name="street"/>
+                            <field name="street2"/>
+                            <field name="city"/>
+                            <field name="state_id"/>
+                            <field name="zip"/>
+                            <field name="country_id"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_fots_agent_search" model="ir.ui.view">
+        <field name="name">fots.agent.search</field>
+        <field name="model">fots.agent</field>
+        <field name="arch" type="xml">
+            <search string="Search Agents">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="team_id"/>
+                <field name="partner_id"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                <group>
+                    <filter string="Team" name="group_team" context="{'group_by': 'team_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_fots_agent" model="ir.actions.act_window">
+        <field name="name">Agents</field>
+        <field name="res_model">fots.agent</field>
+        <field name="path">agents</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first FOTS agent
+            </p>
+            <p>
+                Agents buy G-Flakes at agent prices. Track their sales orders and performance here.
+            </p>
+        </field>
+    </record>
+
+</odoo>

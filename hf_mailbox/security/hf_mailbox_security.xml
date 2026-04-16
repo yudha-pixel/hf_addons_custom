@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="module_category_hf_mailbox" model="ir.module.category">
+            <field name="name">Mailbox</field>
+            <field name="sequence">25</field>
+        </record>
+
+        <record id="group_hf_mailbox_user" model="res.groups">
+            <field name="name">Mailbox User</field>
+            <field name="implied_ids" eval="[Command.link(ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_hf_mailbox_manager" model="res.groups">
+            <field name="name">Mailbox Manager</field>
+            <field name="implied_ids" eval="[Command.link(ref('group_hf_mailbox_user'))]"/>
+        </record>
+
+        <!-- Assign admin user to mailbox manager group via res.users -->
+        <record id="base.user_admin" model="res.users">
+            <field name="group_ids" eval="[Command.link(ref('group_hf_mailbox_manager'))]"/>
+        </record>
+
+        <!-- Record rules: users see threads where they authored, are participants,
+             or where they follow the source document. Managers see all. -->
+        <record id="rule_hf_mailbox_thread_user" model="ir.rule">
+            <field name="name">Mailbox Thread: user visibility</field>
+            <field name="model_id" ref="model_hf_mailbox_thread"/>
+            <field name="groups" eval="[(4, ref('group_hf_mailbox_user'))]"/>
+            <field name="domain_force">[
+                '|', '|',
+                ('participant_ids', 'in', [user.partner_id.id]),
+                ('last_author_id', '=', user.partner_id.id),
+                ('message_ids.author_id', '=', user.partner_id.id),
+            ]</field>
+        </record>
+
+        <record id="rule_hf_mailbox_thread_manager" model="ir.rule">
+            <field name="name">Mailbox Thread: manager sees all</field>
+            <field name="model_id" ref="model_hf_mailbox_thread"/>
+            <field name="groups" eval="[(4, ref('group_hf_mailbox_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="rule_hf_mailbox_message_user" model="ir.rule">
+            <field name="name">Mailbox Message: via thread visibility</field>
+            <field name="model_id" ref="model_hf_mailbox_message"/>
+            <field name="groups" eval="[(4, ref('group_hf_mailbox_user'))]"/>
+            <field name="domain_force">[
+                '|', '|',
+                ('thread_id.participant_ids', 'in', [user.partner_id.id]),
+                ('author_id', '=', user.partner_id.id),
+                ('thread_id.message_ids.author_id', '=', user.partner_id.id),
+            ]</field>
+        </record>
+
+        <record id="rule_hf_mailbox_label_user" model="ir.rule">
+            <field name="name">Mailbox Label: own or shared</field>
+            <field name="model_id" ref="model_hf_mailbox_label"/>
+            <field name="groups" eval="[(4, ref('group_hf_mailbox_user'))]"/>
+            <field name="domain_force">[
+                '|', ('user_id', '=', user.id), ('user_id', '=', False),
+            ]</field>
+        </record>
+
+    </data>
+</odoo>

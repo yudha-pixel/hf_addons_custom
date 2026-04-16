@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="hf_mailbox.MailboxMessage">
+        <article t-att-class="cssClass" t-on-click="onClick">
+            <header class="o_hf_msg_header">
+                <strong t-esc="authorLabel"/>
+                <span class="text-muted ms-2" t-esc="props.message.date"/>
+                <span class="badge bg-info ms-2" t-esc="props.message.direction"/>
+            </header>
+            <div class="o_hf_msg_body"
+                 t-if="props.expanded"
+                 t-out="props.message.body"/>
+        </article>
+    </t>
+
+</templates>

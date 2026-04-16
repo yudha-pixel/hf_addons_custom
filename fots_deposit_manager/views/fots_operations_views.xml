@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- FOTS Deliveries: outgoing pickings from FOTS agent sale orders -->
+    <record id="action_fots_deliveries" model="ir.actions.act_window">
+        <field name="name">Deliveries</field>
+        <field name="res_model">stock.picking</field>
+        <field name="path">fots-deliveries</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('sale_id.fots_agent_id', '!=', False)]</field>
+        <field name="context">{'search_default_todo': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No FOTS deliveries yet
+            </p>
+            <p>
+                Validate agent deliveries here. Use <b>Buy &amp; Go</b> on a FOTS sale order to generate one automatically.
+            </p>
+        </field>
+    </record>
+
+    <!-- FOTS Invoices: customer invoices/refunds tied to FOTS agent partners -->
+    <record id="action_fots_invoices" model="ir.actions.act_window">
+        <field name="name">Invoices</field>
+        <field name="res_model">account.move</field>
+        <field name="path">fots-invoices</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('move_type', 'in', ['out_invoice', 'out_refund']), ('partner_id.fots_agent_ids', '!=', False)]</field>
+        <field name="context">{'default_move_type': 'out_invoice'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No FOTS invoices yet
+            </p>
+            <p>
+                Customer invoices generated for FOTS agents appear here after Buy &amp; Go.
+            </p>
+        </field>
+    </record>
+
+    <!-- FOTS Payments: inbound payments from FOTS agent partners -->
+    <record id="action_fots_payments" model="ir.actions.act_window">
+        <field name="name">Payments</field>
+        <field name="res_model">account.payment</field>
+        <field name="path">fots-payments</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('partner_id.fots_agent_ids', '!=', False), ('payment_type', '=', 'inbound')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No FOTS payments yet
+            </p>
+            <p>
+                Inbound payments registered from FOTS agents appear here.
+            </p>
+        </field>
+    </record>
+
+    <!-- FOTS Products: manage sellable products -->
+    <record id="action_fots_products" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="res_model">product.template</field>
+        <field name="path">fots-products</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('sale_ok', '=', True)]</field>
+        <field name="context">{'default_sale_ok': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No sellable products yet
+            </p>
+            <p>
+                Configure products (default UoM: Dozen) that FOTS agents will purchase.
+            </p>
+        </field>
+    </record>
+
+    <!-- FOTS Pricelists: wholesale pricelists for agents -->
+    <record id="action_fots_pricelists" model="ir.actions.act_window">
+        <field name="name">Pricelists</field>
+        <field name="res_model">product.pricelist</field>
+        <field name="path">fots-pricelists</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No pricelists yet
+            </p>
+            <p>
+                Define wholesale pricelists (e.g. NGN 20,000 per Dozen) and assign them on each FOTS agent.
+            </p>
+        </field>
+    </record>
+
+</odoo>

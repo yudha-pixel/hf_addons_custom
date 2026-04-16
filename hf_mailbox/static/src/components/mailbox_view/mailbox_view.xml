@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="hf_mailbox.MailboxView">
+        <div class="o_hf_mailbox" t-on-keydown="onKeydown" tabindex="0">
+
+            <MailboxSidebar
+                labels="state.labels"
+                folder="state.folder"
+                onFolderChange="(f) => this.onFolderChange(f)"
+                onCompose="() => this.onCompose()"/>
+
+            <!-- Thread list (inline; small enough not to warrant its own folder yet) -->
+            <section class="o_hf_mailbox_list">
+                <div class="o_hf_mailbox_list_header">
+                    <strong t-esc="state.folder"/>
+                    <span class="text-muted ms-2" t-if="!state.loading">
+                        <t t-esc="state.threads.length"/> conversations
+                    </span>
+                    <span class="text-muted ms-2" t-if="state.loading">Loading…</span>
+                </div>
+                <ul class="list-unstyled mb-0">
+                    <t t-foreach="state.threads" t-as="th" t-key="th.id">
+                        <li t-att-class="'o_hf_thread_item'
+                                         + (state.selectedThreadId === th.id ? ' active' : '')
+                                         + (th.state === 'waiting' ? ' waiting' : '')
+                                         + (th.state === 'done' ? ' done' : '')"
+                            t-on-click="() => this.selectThread(th.id)">
+                            <div class="o_hf_thread_top">
+                                <span class="o_hf_thread_author"
+                                      t-esc="th.last_author_id and th.last_author_id[1] or ''"/>
+                                <span class="o_hf_thread_date text-muted"
+                                      t-esc="th.last_message_date"/>
+                            </div>
+                            <div class="o_hf_thread_subject" t-esc="th.name"/>
+                            <div class="o_hf_thread_snippet text-muted" t-esc="th.snippet"/>
+                            <div class="o_hf_thread_meta">
+                                <span class="badge bg-secondary"
+                                      t-if="th.message_count > 1"
+                                      t-esc="th.message_count"/>
+                                <span class="badge bg-warning"
+                                      t-if="th.state === 'waiting'">waiting</span>
+                            </div>
+                        </li>
+                    </t>
+                    <li t-if="!state.threads.length and !state.loading"
+                        class="text-center text-muted p-4">
+                        No conversations in this folder.
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Reader pane -->
+            <section class="o_hf_mailbox_reader">
+                <t t-if="selectedThread">
+                    <header class="o_hf_mailbox_reader_header">
+                        <h4 class="mb-1" t-esc="selectedThread.name"/>
+                        <div class="btn-toolbar gap-1">
+                            <button class="btn btn-sm btn-secondary"
+                                    t-on-click="() => this.onCompose()"
+                                    t-att-disabled="!canReply">
+                                <i class="fa fa-reply me-1"/>Reply
+                            </button>
+                            <button class="btn btn-sm btn-light"
+                                    t-on-click="() => this.markWaiting()"
+                                    t-if="selectedThread.state !== 'waiting'">
+                                Mark Waiting
+                            </button>
+                            <button class="btn btn-sm btn-light"
+                                    t-on-click="() => this.markDone()"
+                                    t-if="selectedThread.state !== 'done'">
+                                Done
+                            </button>
+                            <button class="btn btn-sm btn-link"
+                                    t-on-click="() => this.openSource()"
+                                    t-if="selectedThread.source_model">
+                                Open <t t-esc="selectedThread.source_model"/>
+                            </button>
+                        </div>
+                    </header>
+                    <div class="o_hf_mailbox_messages">
+                        <t t-foreach="state.selectedMessages" t-as="msg" t-key="msg.id">
+                            <MailboxMessage
+                                message="msg"
+                                expanded="state.expandedMessageIds.has(msg.id)"
+                                onToggle="(id) => this.onMessageToggle(id)"/>
+                        </t>
+                        <p t-if="!state.selectedMessages.length" class="text-muted">
+                            No messages.
+                        </p>
+                    </div>
+                    <MailboxComposer
+                        t-if="state.composerOpen"
+                        onSend="(body, opts) => this.onComposerSend(body, opts)"
+                        onCancel="() => this.onComposerCancel()"
+                        disabled="!canReply"/>
+                </t>
+                <t t-else="">
+                    <div class="text-center text-muted p-5">
+                        <i class="fa fa-envelope-o fa-3x mb-3"/>
+                        <p>Select a conversation to read.</p>
+                    </div>
+                </t>
+            </section>
+        </div>
+    </t>
+
+</templates>

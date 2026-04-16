@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Demo Team -->
+        <record id="demo_team_lagos" model="fots.team">
+            <field name="name">Lagos FOTS Team</field>
+            <field name="manager_id" ref="base.user_admin"/>
+            <field name="warehouse_id" ref="stock.warehouse0"/>
+        </record>
+
+        <!-- Demo Users -->
+        <record id="demo_user_agent1" model="res.users">
+            <field name="name">Demo Agent 1</field>
+            <field name="login">demo.agent1@heritagefoods.ltd</field>
+            <field name="email">demo.agent1@heritagefoods.ltd</field>
+            <field name="group_ids" eval="[(4, ref('group_fots_user'))]"/>
+        </record>
+
+        <record id="demo_user_agent2" model="res.users">
+            <field name="name">Demo Agent 2</field>
+            <field name="login">demo.agent2@heritagefoods.ltd</field>
+            <field name="email">demo.agent2@heritagefoods.ltd</field>
+            <field name="group_ids" eval="[(4, ref('group_fots_user'))]"/>
+        </record>
+
+        <!-- Demo Agents (partner auto-created on record creation) -->
+        <record id="demo_agent_1" model="fots.agent">
+            <field name="name">Ayo Adebayo</field>
+            <field name="team_id" ref="demo_team_lagos"/>
+            <field name="user_id" ref="demo_user_agent1"/>
+            <field name="phone">08012345678</field>
+        </record>
+
+        <record id="demo_agent_2" model="fots.agent">
+            <field name="name">Chioma Okafor</field>
+            <field name="team_id" ref="demo_team_lagos"/>
+            <field name="user_id" ref="demo_user_agent2"/>
+            <field name="phone">08087654321</field>
+        </record>
+
+    </data>
+</odoo>

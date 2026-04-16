@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hf_mailbox_thread_user,hf.mailbox.thread user,model_hf_mailbox_thread,group_hf_mailbox_user,1,1,0,0
+access_hf_mailbox_thread_manager,hf.mailbox.thread manager,model_hf_mailbox_thread,group_hf_mailbox_manager,1,1,1,1
+access_hf_mailbox_message_user,hf.mailbox.message user,model_hf_mailbox_message,group_hf_mailbox_user,1,1,1,0
+access_hf_mailbox_message_manager,hf.mailbox.message manager,model_hf_mailbox_message,group_hf_mailbox_manager,1,1,1,1
+access_hf_mailbox_label_user,hf.mailbox.label user,model_hf_mailbox_label,group_hf_mailbox_user,1,1,1,1
+access_hf_mailbox_label_manager,hf.mailbox.label manager,model_hf_mailbox_label,group_hf_mailbox_manager,1,1,1,1
+access_hf_mailbox_compose_user,hf.mailbox.compose user,model_hf_mailbox_compose,group_hf_mailbox_user,1,1,1,1

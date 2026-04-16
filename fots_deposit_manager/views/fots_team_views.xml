@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_fots_team_list" model="ir.ui.view">
+        <field name="name">fots.team.list</field>
+        <field name="model">fots.team</field>
+        <field name="arch" type="xml">
+            <list string="FOTS Teams" decoration-muted="not active">
+                <field name="name"/>
+                <field name="manager_id"/>
+                <field name="warehouse_id"/>
+                <field name="active" widget="boolean_toggle" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_fots_team_kanban" model="ir.ui.view">
+        <field name="name">fots.team.kanban</field>
+        <field name="model">fots.team</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="manager_id"/>
+                <field name="warehouse_id"/>
+                <field name="agent_count"/>
+                <field name="active" readonly="1"/>
+                <templates>
+                    <t t-name="card">
+                        <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                        <field class="fw-bold fs-5" name="name"/>
+                        <div t-if="record.manager_id.raw_value" class="text-muted">
+                            Manager: <field name="manager_id"/>
+                        </div>
+                        <div t-if="record.warehouse_id.raw_value" class="text-muted">
+                            Warehouse: <field name="warehouse_id"/>
+                        </div>
+                        <div class="text-muted">
+                            <field name="agent_count"/> Agents
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_fots_team_form" model="ir.ui.view">
+        <field name="name">fots.team.form</field>
+        <field name="model">fots.team</field>
+        <field name="arch" type="xml">
+            <form string="FOTS Team">
+                <sheet>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <field name="id" invisible="True"/>
+                    <field name="active" invisible="1"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_agents" type="object" class="oe_stat_button" icon="fa-users">
+                            <field name="agent_count" widget="statinfo" string="Agents"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="manager_id"/>
+                        </group>
+                        <group>
+                            <field name="warehouse_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Agents">
+                            <field name="agent_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="phone"/>
+                                    <field name="partner_id"/>
+                                    <field name="pricelist_id" optional="show"/>
+                                    <field name="active" widget="boolean_toggle" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_fots_team_search" model="ir.ui.view">
+        <field name="name">fots.team.search</field>
+        <field name="model">fots.team</field>
+        <field name="arch" type="xml">
+            <search string="Search Teams">
+                <field name="name"/>
+                <field name="manager_id"/>
+                <field name="warehouse_id"/>
+                <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_fots_team" model="ir.actions.act_window">
+        <field name="name">Teams</field>
+        <field name="res_model">fots.team</field>
+        <field name="path">teams</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first FOTS team
+            </p>
+            <p>
+                Teams group agents under a manager and define the warehouse used for daily stock allocation.
+            </p>
+        </field>
+    </record>
+
+</odoo>

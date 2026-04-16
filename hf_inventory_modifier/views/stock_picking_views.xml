@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Progress badge on list view -->
+    <record id="hf_inventory_modifier_view_picking_tree_inherit_progress" model="ir.ui.view">
+        <field name="name">hf.inventory.modifier.stock.picking.list.progress</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list/field[@name='state']" position="before">
+                <field name="hf_progress_state" widget="badge" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Progress badge on form view -->
+    <record id="hf_inventory_modifier_view_picking_form_inherit_progress" model="ir.ui.view">
+        <field name="name">hf.inventory.modifier.stock.picking.form.progress</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet//div[hasclass('oe_title')]/h1" position="after">
+                <div class="mt8">
+                    <field name="hf_progress_state" widget="badge"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Progress badge as search field, filter and group-by -->
+    <record id="hf_inventory_modifier_view_picking_search_inherit_progress" model="ir.ui.view">
+        <field name="name">hf.inventory.modifier.stock.picking.search.progress</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <!-- Searchable field -->
+            <xpath expr="//search/field[@name='picking_type_id']" position="after">
+                <field name="hf_progress_state"/>
+            </xpath>
+
+            <!-- Filters: one per progress stage -->
+            <xpath expr="//filter[@name='backorder']" position="after">
+                <separator/>
+                <filter name="hf_progress_placed"
+                        string="Placed"
+                        domain="[('hf_progress_state', '=', 'placed')]"/>
+                <filter name="hf_progress_processed"
+                        string="Processed"
+                        domain="[('hf_progress_state', '=', 'processed')]"/>
+                <filter name="hf_progress_dispatched"
+                        string="Dispatched"
+                        domain="[('hf_progress_state', '=', 'dispatched')]"/>
+                <filter name="hf_progress_delivered"
+                        string="Delivered"
+                        domain="[('hf_progress_state', '=', 'delivered')]"/>
+            </xpath>
+
+            <!-- Group-by entry alongside existing groups -->
+            <xpath expr="//filter[@name='status']" position="after">
+                <filter name="hf_progress_group"
+                        string="Progress State"
+                        context="{'group_by': 'hf_progress_state'}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

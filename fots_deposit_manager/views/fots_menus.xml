@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Root -->
+    <menuitem id="menu_fots_root"
+              name="FOTS"
+              sequence="50"
+              web_icon="fots_deposit_manager,static/description/icon.png"/>
+
+    <!-- Operations -->
+    <menuitem id="menu_fots_operations"
+              name="Operations"
+              parent="menu_fots_root"
+              sequence="10"/>
+
+    <menuitem id="menu_fots_sale_orders"
+              name="Quotations / Orders"
+              parent="menu_fots_operations"
+              action="action_fots_sale_orders"
+              sequence="10"/>
+
+    <menuitem id="menu_fots_deliveries"
+              name="Deliveries"
+              parent="menu_fots_operations"
+              action="action_fots_deliveries"
+              sequence="20"/>
+
+    <menuitem id="menu_fots_invoices"
+              name="Invoices"
+              parent="menu_fots_operations"
+              action="action_fots_invoices"
+              groups="fots_deposit_manager.group_fots_manager"
+              sequence="30"/>
+
+    <menuitem id="menu_fots_payments"
+              name="Payments"
+              parent="menu_fots_operations"
+              action="action_fots_payments"
+              groups="fots_deposit_manager.group_fots_manager"
+              sequence="40"/>
+
+    <!-- Master Data -->
+    <menuitem id="menu_fots_master"
+              name="Master Data"
+              parent="menu_fots_root"
+              sequence="20"/>
+
+    <menuitem id="menu_fots_agents"
+              name="Agents"
+              parent="menu_fots_master"
+              action="action_fots_agent"
+              sequence="10"/>
+
+    <menuitem id="menu_fots_teams"
+              name="Teams"
+              parent="menu_fots_master"
+              action="action_fots_team"
+              sequence="20"/>
+
+    <menuitem id="menu_fots_products"
+              name="Products"
+              parent="menu_fots_master"
+              action="action_fots_products"
+              groups="fots_deposit_manager.group_fots_manager"
+              sequence="30"/>
+
+    <menuitem id="menu_fots_pricelists"
+              name="Pricelists"
+              parent="menu_fots_master"
+              action="action_fots_pricelists"
+              groups="fots_deposit_manager.group_fots_manager"
+              sequence="40"/>
+
+    <!-- Reports -->
+    <menuitem id="menu_fots_reports"
+              name="Reports"
+              parent="menu_fots_root"
+              sequence="30"/>
+
+    <menuitem id="menu_fots_report_agent_sales"
+              name="Agent Sales"
+              parent="menu_fots_reports"
+              action="action_fots_report_agent_sales"
+              sequence="10"/>
+
+    <menuitem id="menu_fots_report_team_performance"
+              name="Team Performance"
+              parent="menu_fots_reports"
+              action="action_fots_report_team_performance"
+              sequence="20"/>
+
+</odoo>

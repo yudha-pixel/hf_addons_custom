@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hf_mailbox_compose_form" model="ir.ui.view">
+        <field name="name">hf.mailbox.compose.form</field>
+        <field name="model">hf.mailbox.compose</field>
+        <field name="arch" type="xml">
+            <form string="New Message">
+                <sheet>
+                    <group>
+                        <field name="partner_ids"
+                               widget="many2many_tags"
+                               options="{'no_create_edit': True}"
+                               placeholder="To..."/>
+                        <field name="subject" placeholder="Subject"/>
+                        <field name="message_type" widget="radio"/>
+                        <field name="mail_server_id"
+                               invisible="message_type != 'email'"
+                               groups="hf_mailbox.group_hf_mailbox_manager"/>
+                    </group>
+                    <field name="body"
+                           nolabel="1"
+                           placeholder="Write your message..."
+                           options="{'style-inline': true}"/>
+                    <field name="attachment_ids"
+                           widget="many2many_binary"
+                           string="Attachments"/>
+                </sheet>
+                <footer>
+                    <button name="action_send"
+                            type="object"
+                            string="Send"
+                            class="btn-primary"/>
+                    <button string="Discard"
+                            class="btn-secondary"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hf_mailbox_compose" model="ir.actions.act_window">
+        <field name="name">New Message</field>
+        <field name="res_model">hf.mailbox.compose</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

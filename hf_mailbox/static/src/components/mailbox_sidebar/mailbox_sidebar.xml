@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="hf_mailbox.MailboxSidebar">
+        <aside class="o_hf_mailbox_sidebar">
+            <button class="btn btn-primary w-100 mb-3"
+                    t-on-click="() => props.onCompose()">
+                <i class="fa fa-pencil me-1"/> Compose
+            </button>
+
+            <ul class="o_hf_mailbox_folders list-unstyled">
+                <t t-foreach="folders" t-as="f" t-key="f.key">
+                    <li t-att-class="isActive(f.key) ? 'active' : ''"
+                        t-on-click="() => props.onFolderChange(f.key)">
+                        <i t-attf-class="fa me-2 {{ f.icon }}"/>
+                        <t t-esc="f.label"/>
+                    </li>
+                </t>
+            </ul>
+
+            <h6 class="text-muted text-uppercase mt-3 mb-2">Labels</h6>
+            <ul class="o_hf_mailbox_labels list-unstyled">
+                <t t-foreach="props.labels" t-as="label" t-key="label.id">
+                    <li t-att-class="isActive('label:' + label.id) ? 'active' : ''"
+                        t-on-click="() => props.onFolderChange('label:' + label.id)">
+                        <span class="o_hf_dot"
+                              t-attf-style="background-color: var(--o-color-{{ label.color || 0 }}, #aaa);"/>
+                        <t t-esc="label.name"/>
+                    </li>
+                </t>
+                <li t-if="!props.labels.length" class="text-muted small ps-2">
+                    No labels yet.
+                </li>
+            </ul>
+        </aside>
+    </t>
+
+</templates>
