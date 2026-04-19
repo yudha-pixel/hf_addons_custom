@@ -22,6 +22,11 @@
                         class="oe_highlight"
                         invisible="not fots_agent_id or state not in ('draft','sent')"
                         help="Confirm the order, validate delivery, post the invoice, and register the payment in one click."/>
+                <button name="action_fots_open_refund_wizard"
+                        type="object"
+                        string="Refund"
+                        invisible="not fots_agent_id or state != 'sale'"
+                        help="Select returned products, then create the return delivery and posted credit note in one step."/>
             </xpath>
         </field>
     </record>

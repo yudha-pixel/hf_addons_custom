@@ -3,3 +3,5 @@ access_fots_team_manager,fots.team.manager,model_fots_team,,1,1,1,1
 access_fots_team_user,fots.team.user,model_fots_team,group_fots_user,1,0,0,0
 access_fots_agent_manager,fots.agent.manager,model_fots_agent,,1,1,1,1
 access_fots_agent_user,fots.agent.user,model_fots_agent,group_fots_user,1,0,0,0
+access_fots_sale_order_refund_wizard,fots.sale.order.refund.wizard,model_fots_sale_order_refund_wizard,,1,1,1,1
+access_fots_sale_order_refund_line,fots.sale.order.refund.line,model_fots_sale_order_refund_line,,1,1,1,1

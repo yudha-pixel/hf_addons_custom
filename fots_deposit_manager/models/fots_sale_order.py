@@ -103,3 +103,51 @@ class SaleOrder(models.Model):
             'view_mode': 'form',
             'target': 'current',
         }
+
+    def _fots_refund_delivery_candidates(self):
+        self.ensure_one()
+        return self.picking_ids.filtered(
+            lambda picking: picking.state == 'done' and picking.picking_type_code == 'outgoing'
+        )
+
+    def _fots_refund_invoice_candidates(self):
+        self.ensure_one()
+        return self.invoice_ids.filtered(
+            lambda invoice: invoice.state == 'posted' and invoice.move_type == 'out_invoice'
+        )
+
+    def action_fots_open_refund_wizard(self):
+        self.ensure_one()
+
+        if not self.fots_agent_id:
+            raise UserError(_('Refund is only available for FOTS agent orders.'))
+        if self.state != 'sale':
+            raise UserError(_('Refund is only available for confirmed FOTS sales orders.'))
+
+        deliveries = self._fots_refund_delivery_candidates()
+        invoices = self._fots_refund_invoice_candidates()
+        if not deliveries:
+            raise UserError(_('This FOTS sales order has no done outgoing delivery to return.'))
+        if not invoices:
+            raise UserError(_(
+                'This FOTS sales order has no posted customer invoice to refund.'
+            ))
+
+        wizard = self.env['fots.sale.order.refund.wizard'].create({
+            'sale_order_id': self.id,
+            'picking_id': deliveries[:1].id,
+            'invoice_id': invoices[:1].id,
+        })
+        wizard._rebuild_refund_lines()
+
+        return {
+            'name': _('FOTS Refund'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'fots.sale.order.refund.wizard',
+            'res_id': wizard.id,
+            'view_mode': 'form',
+            'view_id': self.env.ref(
+                'fots_deposit_manager.view_fots_sale_order_refund_wizard_form'
+            ).id,
+            'target': 'new',
+        }

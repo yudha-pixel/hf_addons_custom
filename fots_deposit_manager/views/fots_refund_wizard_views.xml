@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_fots_sale_order_refund_wizard_form" model="ir.ui.view">
+        <field name="name">fots.sale.order.refund.wizard.form</field>
+        <field name="model">fots.sale.order.refund.wizard</field>
+        <field name="arch" type="xml">
+            <form string="FOTS Refund">
+                <field name="available_picking_ids" invisible="1"/>
+                <field name="available_invoice_ids" invisible="1"/>
+                <group>
+                    <field name="sale_order_id" readonly="1"/>
+                </group>
+                <group string="Delivery Return">
+                    <field name="picking_id"
+                           domain="[('id', 'in', available_picking_ids)]"
+                           options="{'no_create': True, 'no_open': True}"/>
+                </group>
+                <group string="Credit Note">
+                    <field name="invoice_id"
+                           domain="[('id', 'in', available_invoice_ids)]"
+                           options="{'no_create': True, 'no_open': True}"/>
+                </group>
+                <field name="line_ids">
+                    <list editable="bottom" create="0" delete="0">
+                        <field name="product_id" readonly="1"/>
+                        <field name="delivered_qty" readonly="1"/>
+                        <field name="returned_qty" readonly="1"/>
+                        <field name="returnable_qty" readonly="1"/>
+                        <field name="return_qty"/>
+                        <field name="move_id" column_invisible="1"/>
+                        <field name="sale_line_id" column_invisible="1"/>
+                        <field name="invoice_line_id" column_invisible="1"/>
+                        <field name="product_uom_id" groups="uom.group_uom" readonly="1"/>
+                    </list>
+                </field>
+                <footer>
+                    <button name="action_process_return"
+                            string="Process Return"
+                            type="object"
+                            class="btn-primary"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

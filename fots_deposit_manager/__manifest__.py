@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Heritage Foods - FOTS Field Sales Manager',
-    'version': '1.1.3',
+    'version': '1.2.1',
     'category': 'Sales',
     'summary': 'Field agent stock allocation, sales sessions, and commission tracking for FOTS Team',
     'description': """
@@ -44,6 +44,7 @@ Features:
         'views/fots_team_views.xml',
         'views/fots_agent_views.xml',
         'views/fots_sale_order_views.xml',
+        'views/fots_refund_wizard_views.xml',
         'views/fots_operations_views.xml',
         'views/fots_reports_views.xml',
         'views/fots_menus.xml',
