@@ -4,13 +4,25 @@
     <t t-name="hf_mailbox.MailboxMessage">
         <article t-att-class="cssClass" t-on-click="onClick">
             <header class="o_hf_msg_header">
-                <strong t-esc="authorLabel"/>
-                <span class="text-muted ms-2" t-esc="props.message.date"/>
-                <span class="badge bg-info ms-2" t-esc="props.message.direction"/>
+                <div class="o_hf_msg_header_top">
+                    <strong t-esc="authorLabel"/>
+                    <span class="text-muted ms-2" t-esc="props.message.date"/>
+                    <span class="badge bg-info ms-2" t-esc="props.message.direction"/>
+                </div>
+                <div class="o_hf_msg_addresses" t-if="props.expanded">
+                    <div>
+                        <span class="o_hf_msg_address_label">From:</span>
+                        <span t-esc="authorLabel"/>
+                    </div>
+                    <div t-if="recipientLabel">
+                        <span class="o_hf_msg_address_label">To:</span>
+                        <span t-esc="recipientLabel"/>
+                    </div>
+                </div>
             </header>
             <div class="o_hf_msg_body"
                  t-if="props.expanded"
-                 t-out="props.message.body"/>
+                 t-out="bodyContent"/>
         </article>
     </t>
 

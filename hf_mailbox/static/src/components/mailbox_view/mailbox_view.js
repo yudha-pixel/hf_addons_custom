@@ -9,6 +9,14 @@ import { MailboxSidebar } from "../mailbox_sidebar/mailbox_sidebar";
 import { MailboxMessage } from "../mailbox_thread/mailbox_thread";
 import { MailboxComposer } from "../mailbox_composer/mailbox_composer";
 
+const FOLDER_LABELS = {
+    inbox: _t("Inbox"),
+    sent: _t("Sent"),
+    waiting: _t("Waiting Reply"),
+    followup: _t("Follow-up"),
+    done: _t("Done"),
+};
+
 /**
  * Main orchestrator for the Gmail-style mailbox.
  * Owns the global state (current folder, selected thread, expanded messages)
@@ -182,6 +190,15 @@ export class MailboxView extends Component {
     // ------------------------------------------------------------------
     get selectedThread() {
         return this.state.threads.find(t => t.id === this.state.selectedThreadId) || null;
+    }
+
+    get currentFolderLabel() {
+        if (this.state.folder.startsWith("label:")) {
+            const labelId = parseInt(this.state.folder.slice(6), 10);
+            const label = this.state.labels.find(l => l.id === labelId);
+            return label ? label.name : _t("Label");
+        }
+        return FOLDER_LABELS[this.state.folder] || this.state.folder;
     }
 
     get canReply() {

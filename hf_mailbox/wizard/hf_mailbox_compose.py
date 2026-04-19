@@ -40,6 +40,7 @@ class HfMailboxCompose(models.TransientModel):
         mtype = 'comment' if self.message_type == 'comment' else 'email_outgoing'
         post_kwargs_base = {
             'body': self.body or '',
+            'body_is_html': True,
             'subject': self.subject,
             'message_type': mtype,
             'subtype_xmlid': subtype,

@@ -13,7 +13,7 @@
             <!-- Thread list (inline; small enough not to warrant its own folder yet) -->
             <section class="o_hf_mailbox_list">
                 <div class="o_hf_mailbox_list_header">
-                    <strong t-esc="state.folder"/>
+                    <strong t-esc="currentFolderLabel"/>
                     <span class="text-muted ms-2" t-if="!state.loading">
                         <t t-esc="state.threads.length"/> conversations
                     </span>
@@ -44,7 +44,7 @@
                         </li>
                     </t>
                     <li t-if="!state.threads.length and !state.loading"
-                        class="text-center text-muted p-4">
+                        class="o_hf_mailbox_empty_state text-center text-muted p-4">
                         No conversations in this folder.
                     </li>
                 </ul>
@@ -54,7 +54,10 @@
             <section class="o_hf_mailbox_reader">
                 <t t-if="selectedThread">
                     <header class="o_hf_mailbox_reader_header">
-                        <h4 class="mb-1" t-esc="selectedThread.name"/>
+                        <div>
+                            <div class="o_hf_mailbox_reader_folder" t-esc="currentFolderLabel"/>
+                            <h4 class="mb-1" t-esc="selectedThread.name"/>
+                        </div>
                         <div class="btn-toolbar gap-1">
                             <button class="btn btn-sm btn-secondary"
                                     t-on-click="() => this.onCompose()"
@@ -96,7 +99,7 @@
                         disabled="!canReply"/>
                 </t>
                 <t t-else="">
-                    <div class="text-center text-muted p-5">
+                    <div class="o_hf_mailbox_empty_state text-center text-muted p-5">
                         <i class="fa fa-envelope-o fa-3x mb-3"/>
                         <p>Select a conversation to read.</p>
                     </div>

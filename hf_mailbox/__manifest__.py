@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Heritage Foods - Mailbox (Gmail-style)',
-    'version': '1.1.1',
+    'version': '1.2.1',
     'category': 'Productivity/Discuss',
     'summary': 'Unified Gmail-like Inbox/Outbox with smart chaining and follow-up automation.',
     'description': """

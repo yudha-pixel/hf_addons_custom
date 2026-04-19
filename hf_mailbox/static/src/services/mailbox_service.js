@@ -18,11 +18,14 @@ export const mailboxService = {
         const MESSAGE_FIELDS = [
             "id", "mail_message_id", "chain_index", "direction",
             "date", "author_id", "email_from", "subject", "body",
+            "display_from", "display_to",
         ];
         const LABEL_FIELDS = ["id", "name", "color", "system_key", "user_id"];
 
         function folderDomain(folder) {
-            if (!folder || folder === "inbox") return [["state", "!=", "done"]];
+            if (!folder || folder === "inbox") {
+                return [["state", "!=", "done"], ["last_direction", "=", "incoming"]];
+            }
             if (folder === "sent")      return [["last_direction", "=", "outgoing"]];
             if (folder === "waiting")   return [["state", "=", "waiting"]];
             if (folder === "followup")  return [["label_ids.system_key", "=", "followup"]];
