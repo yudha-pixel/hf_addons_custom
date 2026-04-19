@@ -142,11 +142,13 @@ class FotsAgent(models.Model):
 
     def action_view_sale_orders(self):
         self.ensure_one()
+        form_view_id = self.env.ref('fots_deposit_manager.view_sale_order_form_fots')
         return {
             'type': 'ir.actions.act_window',
             'name': _('Sales Orders'),
             'res_model': 'sale.order',
             'view_mode': 'list,form',
+            'views': [(False, 'list'), (form_view_id.id, 'form')],
             'domain': [('fots_agent_id', '=', self.id)],
             'context': {
                 **(self.env.context or {}),

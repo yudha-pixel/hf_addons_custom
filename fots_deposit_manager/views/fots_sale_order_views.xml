@@ -21,7 +21,6 @@
                         string="Buy &amp; Go"
                         class="oe_highlight"
                         invisible="not fots_agent_id or state not in ('draft','sent')"
-                        groups="fots_deposit_manager.group_fots_user"
                         help="Confirm the order, validate delivery, post the invoice, and register the payment in one click."/>
             </xpath>
         </field>

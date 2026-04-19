@@ -60,12 +60,13 @@ class SaleOrder(models.Model):
         dozen_uom = self.env.ref('uom.product_uom_dozen', raise_if_not_found=False)
         if dozen_uom:
             non_dozen = self.order_line.filtered(
-                lambda l: l.product_id and l.product_uom_id and l.product_uom_id != dozen_uom
+                lambda l: l.product_id and l.product_uom_id
+                          and not l.product_uom_id._has_common_reference(dozen_uom)
             )
             if non_dozen:
                 raise UserError(_(
-                    'Buy & Go requires every line to be sold in Dozens. '
-                    'The following lines use a different unit of measure:\n- %s'
+                    'Buy & Go requires every line to use a unit of measure compatible with Dozens. '
+                    'The following lines use an incompatible unit of measure:\n- %s'
                 ) % '\n- '.join(non_dozen.mapped('product_id.display_name')))
 
         # 1. Confirm the sale order.
