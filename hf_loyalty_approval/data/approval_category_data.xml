@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Standard: single level, any internal user placeholder -->
+    <record id="category_loyalty_standard" model="loyalty.approval.category">
+        <field name="name">Loyalty — Standard</field>
+        <field name="sequence">10</field>
+        <field name="description">Low-risk promotions: up to 15% discount.</field>
+        <field name="min_approval">1</field>
+    </record>
+    <record id="category_loyalty_standard_level_1" model="loyalty.approval.category.approver">
+        <field name="category_id" ref="category_loyalty_standard"/>
+        <field name="sequence">1</field>
+        <field name="level_name">Approver</field>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="min_approvals">1</field>
+    </record>
+
+    <!-- High Discount: 2 sequential levels -->
+    <record id="category_loyalty_high" model="loyalty.approval.category">
+        <field name="name">Loyalty — High Discount</field>
+        <field name="sequence">20</field>
+        <field name="description">Medium-risk: 15-30% or 250-1000 fixed reward.</field>
+        <field name="min_approval">1</field>
+    </record>
+    <record id="category_loyalty_high_level_1" model="loyalty.approval.category.approver">
+        <field name="category_id" ref="category_loyalty_high"/>
+        <field name="sequence">1</field>
+        <field name="level_name">Regional Manager</field>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="min_approvals">1</field>
+    </record>
+    <record id="category_loyalty_high_level_2" model="loyalty.approval.category.approver">
+        <field name="category_id" ref="category_loyalty_high"/>
+        <field name="sequence">2</field>
+        <field name="level_name">London Approver</field>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="min_approvals">1</field>
+    </record>
+
+    <!-- Critical: 3 sequential levels -->
+    <record id="category_loyalty_critical" model="loyalty.approval.category">
+        <field name="name">Loyalty — Critical</field>
+        <field name="sequence">30</field>
+        <field name="description">High-risk: above 30% or 1000 fixed reward.</field>
+        <field name="min_approval">1</field>
+    </record>
+    <record id="category_loyalty_critical_level_1" model="loyalty.approval.category.approver">
+        <field name="category_id" ref="category_loyalty_critical"/>
+        <field name="sequence">1</field>
+        <field name="level_name">Regional Manager</field>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="min_approvals">1</field>
+    </record>
+    <record id="category_loyalty_critical_level_2" model="loyalty.approval.category.approver">
+        <field name="category_id" ref="category_loyalty_critical"/>
+        <field name="sequence">2</field>
+        <field name="level_name">Finance Review</field>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="min_approvals">1</field>
+    </record>
+    <record id="category_loyalty_critical_level_3" model="loyalty.approval.category.approver">
+        <field name="category_id" ref="category_loyalty_critical"/>
+        <field name="sequence">3</field>
+        <field name="level_name">London Approver</field>
+        <field name="group_id" ref="base.group_user"/>
+        <field name="min_approvals">1</field>
+    </record>
+
+</odoo>

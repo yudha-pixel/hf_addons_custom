@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="mail_template_loyalty_approval_request" model="mail.template">
+        <field name="name">Loyalty: Approval Request</field>
+        <field name="model_id" ref="loyalty.model_loyalty_program"/>
+        <field name="subject">Promo Approval Request: {{ object.name }}</field>
+        <field name="description">Sent to London Approvers when a branch user submits a loyalty program for approval.</field>
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif;">
+                <p>Dear Approver,</p>
+                <p>
+                    A new loyalty / promotion program has been submitted for your approval.
+                </p>
+                <ul>
+                    <li><strong>Program:</strong> <t t-out="object.name"/></li>
+                    <li><strong>Type:</strong> <t t-out="object.program_type"/></li>
+                    <li><strong>Requested by:</strong> <t t-out="object.requested_by_id.name"/></li>
+                    <li><strong>Company:</strong> <t t-out="object.company_id.name or ''"/></li>
+                </ul>
+                <p>Please review and approve or reject the request in Odoo.</p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+</odoo>

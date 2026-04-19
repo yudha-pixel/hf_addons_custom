@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="loyalty_program_view_form_approval" model="ir.ui.view">
+        <field name="name">loyalty.program.form.approval</field>
+        <field name="model">loyalty.program</field>
+        <field name="inherit_id" ref="loyalty.loyalty_program_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header" position="inside">
+                <button name="action_request_approval" type="object" string="Request Approval"
+                        class="btn-primary" invisible="approval_state != 'draft'"/>
+                <button name="action_approve" type="object" string="Approve"
+                        class="btn-primary"
+                        invisible="approval_state != 'waiting' or not can_current_user_act"/>
+                <button name="action_open_reject_wizard" type="object" string="Reject"
+                        class="btn-secondary"
+                        invisible="approval_state != 'waiting' or not can_current_user_act"/>
+                <button name="action_reset_to_draft" type="object" string="Reset to Draft"
+                        invisible="approval_state not in ('rejected', 'approved')"/>
+                <field name="approval_state" widget="statusbar"
+                       statusbar_visible="draft,waiting,approved"/>
+                <field name="can_current_user_act" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//sheet" position="after">
+                <chatter/>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_approval_request" type="object"
+                        class="oe_stat_button" icon="fa-check-square-o"
+                        invisible="not approval_request_id">
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_value"><field name="approval_tier"/></span>
+                        <span class="o_stat_text">Approval</span>
+                    </div>
+                </button>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Approval" name="heritage_approval_group">
+                    <group>
+                        <group>
+                            <field name="approval_request_id" readonly="1"/>
+                            <field name="approval_tier" readonly="1"/>
+                            <field name="approval_level_summary" readonly="1"
+                                   invisible="approval_state != 'waiting'"/>
+                        </group>
+                        <group>
+                            <field name="requested_by_id" readonly="1"/>
+                            <field name="request_date" readonly="1"/>
+                            <field name="approved_by_id" readonly="1"/>
+                            <field name="approval_date" readonly="1"/>
+                            <field name="rejection_reason" readonly="1"
+                                   invisible="approval_state != 'rejected'" colspan="2"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="loyalty_program_view_search_approval" model="ir.ui.view">
+        <field name="name">loyalty.program.search.approval</field>
+        <field name="model">loyalty.program</field>
+        <field name="inherit_id" ref="loyalty.loyalty_program_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter name="filter_approval_draft" string="Draft"
+                        domain="[('approval_state', '=', 'draft')]"/>
+                <filter name="filter_approval_waiting" string="Pending Approval"
+                        domain="[('approval_state', '=', 'waiting')]"/>
+                <filter name="filter_approval_approved" string="Approved"
+                        domain="[('approval_state', '=', 'approved')]"/>
+                <filter name="filter_approval_rejected" string="Rejected"
+                        domain="[('approval_state', '=', 'rejected')]"/>
+                <group>
+                    <filter name="group_approval_state" string="Approval Status"
+                            context="{'group_by': 'approval_state'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="loyalty_program_view_tree_approval" model="ir.ui.view">
+        <field name="name">loyalty.program.list.approval</field>
+        <field name="model">loyalty.program</field>
+        <field name="inherit_id" ref="loyalty.loyalty_program_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="inside">
+                <field name="approval_state"
+                       decoration-info="approval_state == 'draft'"
+                       decoration-warning="approval_state == 'waiting'"
+                       decoration-success="approval_state == 'approved'"
+                       decoration-danger="approval_state == 'rejected'"
+                       widget="badge"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_loyalty_rejection_wizard,access_loyalty_rejection_wizard,model_loyalty_rejection_wizard,base.group_user,1,1,1,1
+access_loyalty_approval_category,loyalty.approval.category,model_loyalty_approval_category,base.group_user,1,1,1,1
+access_loyalty_approval_category_approver,loyalty.approval.category.approver,model_loyalty_approval_category_approver,base.group_user,1,1,1,1
+access_loyalty_approval_category_mapping,loyalty.approval.category.mapping,model_loyalty_approval_category_mapping,base.group_user,1,1,1,1
+access_loyalty_approval_request,loyalty.approval.request,model_loyalty_approval_request,base.group_user,1,1,1,1
+access_loyalty_approval_request_approver,loyalty.approval.request.approver,model_loyalty_approval_request_approver,base.group_user,1,1,1,1

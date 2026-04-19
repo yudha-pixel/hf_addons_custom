@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="mapping_critical" model="loyalty.approval.category.mapping">
+        <field name="name">Critical tier</field>
+        <field name="sequence">10</field>
+        <field name="match_domain">[('approval_tier', '=', 'critical')]</field>
+        <field name="category_id" ref="category_loyalty_critical"/>
+    </record>
+
+    <record id="mapping_high" model="loyalty.approval.category.mapping">
+        <field name="name">High discount tier</field>
+        <field name="sequence">20</field>
+        <field name="match_domain">[('approval_tier', '=', 'high')]</field>
+        <field name="category_id" ref="category_loyalty_high"/>
+    </record>
+
+    <record id="mapping_default" model="loyalty.approval.category.mapping">
+        <field name="name">Default (standard)</field>
+        <field name="sequence">999</field>
+        <field name="match_domain">[]</field>
+        <field name="category_id" ref="category_loyalty_standard"/>
+        <field name="is_default" eval="True"/>
+    </record>
+
+    <!-- Tier thresholds as config parameters (overridable via Settings > Technical) -->
+    <record id="ir_config_tier_high_pct" model="ir.config_parameter">
+        <field name="key">hf_loyalty_approval.tier_high_pct</field>
+        <field name="value">15</field>
+    </record>
+    <record id="ir_config_tier_critical_pct" model="ir.config_parameter">
+        <field name="key">hf_loyalty_approval.tier_critical_pct</field>
+        <field name="value">30</field>
+    </record>
+    <record id="ir_config_tier_high_fixed" model="ir.config_parameter">
+        <field name="key">hf_loyalty_approval.tier_high_fixed</field>
+        <field name="value">250</field>
+    </record>
+    <record id="ir_config_tier_critical_fixed" model="ir.config_parameter">
+        <field name="key">hf_loyalty_approval.tier_critical_fixed</field>
+        <field name="value">1000</field>
+    </record>
+
+</odoo>

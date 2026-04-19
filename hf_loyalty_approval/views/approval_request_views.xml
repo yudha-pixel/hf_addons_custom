@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="loyalty_approval_request_view_list" model="ir.ui.view">
+        <field name="name">loyalty.approval.request.list</field>
+        <field name="model">loyalty.approval.request</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="program_id"/>
+                <field name="category_id"/>
+                <field name="owner_id"/>
+                <field name="current_level"/>
+                <field name="total_levels"/>
+                <field name="state" widget="badge"
+                       decoration-info="state == 'new'"
+                       decoration-warning="state == 'pending'"
+                       decoration-success="state == 'approved'"
+                       decoration-danger="state == 'refused'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="loyalty_approval_request_view_form" model="ir.ui.view">
+        <field name="name">loyalty.approval.request.form</field>
+        <field name="model">loyalty.approval.request</field>
+        <field name="arch" type="xml">
+            <form string="Loyalty Approval Request">
+                <header>
+                    <button name="action_approve" type="object" string="Approve"
+                            class="btn-primary" invisible="state != 'pending'"/>
+                    <button name="action_refuse" type="object" string="Refuse"
+                            class="btn-secondary" invisible="state != 'pending'"/>
+                    <button name="action_refresh_approvers" type="object" string="Refresh Approvers"
+                            invisible="state != 'pending'"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state in ('approved', 'refused', 'cancel')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="new,pending,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_program" type="object" class="oe_stat_button" icon="fa-tags">
+                            <span>Program</span>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="program_id" readonly="1"/>
+                            <field name="category_id" readonly="1"/>
+                            <field name="owner_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="current_level" readonly="1"/>
+                            <field name="total_levels" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Levels" name="approvers">
+                            <field name="approver_ids">
+                                <list>
+                                    <field name="sequence"/>
+                                    <field name="level_name"/>
+                                    <field name="candidate_user_ids" widget="many2many_tags"/>
+                                    <field name="required_approvals"/>
+                                    <field name="status" widget="badge"
+                                           decoration-warning="status == 'pending'"
+                                           decoration-success="status == 'approved'"
+                                           decoration-danger="status == 'refused'"/>
+                                    <field name="decided_by_id"/>
+                                    <field name="decided_on"/>
+                                    <field name="delegated_from_id" optional="hide"/>
+                                    <field name="comment" optional="hide"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Summary" name="reason">
+                            <field name="reason" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_loyalty_approval_request" model="ir.actions.act_window">
+        <field name="name">Approval Requests</field>
+        <field name="res_model">loyalty.approval.request</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

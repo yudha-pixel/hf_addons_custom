@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="loyalty_rejection_wizard_view_form" model="ir.ui.view">
+        <field name="name">loyalty.rejection.wizard.form</field>
+        <field name="model">loyalty.rejection.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reject Loyalty Program">
+                <group>
+                    <field name="program_id" invisible="1"/>
+                    <field name="reason" placeholder="Explain why this program is rejected..."/>
+                </group>
+                <footer>
+                    <button string="Confirm Rejection" type="object" name="action_confirm" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="loyalty_approval_mapping_view_list" model="ir.ui.view">
+        <field name="name">loyalty.approval.category.mapping.list</field>
+        <field name="model">loyalty.approval.category.mapping</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="match_domain"/>
+                <field name="category_id"/>
+                <field name="is_default"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="loyalty_approval_mapping_view_form" model="ir.ui.view">
+        <field name="name">loyalty.approval.category.mapping.form</field>
+        <field name="model">loyalty.approval.category.mapping</field>
+        <field name="arch" type="xml">
+            <form string="Approval Routing">
+                <header>
+                    <button name="action_test_match" type="object" string="Test Match" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                        <field name="category_id"/>
+                        <field name="is_default"/>
+                        <field name="active"/>
+                    </group>
+                    <group string="Match Domain">
+                        <field name="match_domain" nolabel="1" placeholder="[('approval_tier', '=', 'high')]"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_loyalty_approval_mapping" model="ir.actions.act_window">
+        <field name="name">Approval Routing</field>
+        <field name="res_model">loyalty.approval.category.mapping</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

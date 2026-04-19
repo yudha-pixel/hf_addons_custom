@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_loyalty_program_pending" model="ir.actions.act_window">
+        <field name="name">Pending Approvals</field>
+        <field name="res_model">loyalty.program</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('approval_state', '=', 'waiting')]</field>
+        <field name="context">{'search_default_filter_approval_waiting': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No promotions are currently awaiting approval.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_loyalty_approval_root"
+              name="Loyalty Approvals"
+              web_icon="hf_loyalty_approval,static/description/icon.svg"
+              sequence="95"/>
+
+    <menuitem id="menu_approval_root"
+              name="Approval"
+              parent="menu_loyalty_approval_root"
+              sequence="10"/>
+
+    <menuitem id="menu_loyalty_pending_approvals"
+              name="Pending Approvals"
+              parent="menu_approval_root"
+              action="action_loyalty_program_pending"
+              sequence="10"/>
+
+    <menuitem id="menu_loyalty_approval_requests"
+              name="Approval Requests"
+              parent="menu_approval_root"
+              action="action_loyalty_approval_request"
+              sequence="20"/>
+
+    <menuitem id="menu_discount_loyalty_type_config"
+        action="loyalty.loyalty_program_discount_loyalty_action"
+        parent="menu_loyalty_approval_root"
+        sequence="20"/>
+
+    <menuitem id="menu_loyalty_approval_config"
+              name="Configuration"
+              parent="menu_loyalty_approval_root"
+              sequence="90"/>
+
+    <menuitem id="menu_loyalty_approval_categories"
+              name="Approval Categories"
+              parent="menu_loyalty_approval_config"
+              action="action_loyalty_approval_category"
+              sequence="10"/>
+
+    <menuitem id="menu_loyalty_approval_routing"
+              name="Approval Routing"
+              parent="menu_loyalty_approval_config"
+              action="action_loyalty_approval_mapping"
+              sequence="20"/>
+
+</odoo>
