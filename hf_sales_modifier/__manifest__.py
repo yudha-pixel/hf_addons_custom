@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Heritage Foods - Sales Modifier',
-    'version': '1.0.0',
+    'version': '1.0.1',
     'category': 'Sales',
     'summary': 'Read-only access profile for Head of Marketing',
     'author': 'Yudha/Heritage Foods Development Team',
