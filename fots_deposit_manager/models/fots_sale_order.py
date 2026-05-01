@@ -79,6 +79,7 @@ class SaleOrder(models.Model):
                 skip_backorder=True,
                 skip_sanity_check=True,
                 cancel_backorder=True,
+                hf_bypass_signature=True,
             )
             pickings.button_validate()
 

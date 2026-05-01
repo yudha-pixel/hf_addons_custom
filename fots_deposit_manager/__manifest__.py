@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Heritage Foods - FOTS Field Sales Manager',
-    'version': '1.2.1',
+    'version': '1.2.2',
     'category': 'Sales',
     'summary': 'Field agent stock allocation, sales sessions, and commission tracking for FOTS Team',
     'description': """

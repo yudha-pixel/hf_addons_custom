@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from unittest.mock import patch
+
 from odoo.tests import TransactionCase, tagged
 from odoo.exceptions import ValidationError
 
@@ -96,3 +98,66 @@ class TestFotsSaleOrder(TransactionCase):
             })],
         })
         self.assertFalse(order.fots_agent_id)
+
+    def test_buy_and_go_validates_delivery_with_signature_bypass_context(self):
+        """Buy & Go should pass the HF bypass context into delivery validation."""
+        dozen_uom = self.env.ref('uom.product_uom_dozen', raise_if_not_found=False)
+        if not dozen_uom:
+            self.skipTest('Dozen UoM is not installed.')
+
+        product = self.env['product.product'].create({
+            'name': 'FOTS Dozen Test Product',
+            'type': 'consu',
+            'sale_ok': True,
+            'uom_id': dozen_uom.id,
+            'uom_po_id': dozen_uom.id,
+            'lst_price': 100.0,
+        })
+        order = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+            'fots_agent_id': self.agent.id,
+            'order_line': [(0, 0, {
+                'product_id': product.id,
+                'product_uom_qty': 1,
+                'product_uom': dozen_uom.id,
+                'price_unit': 100.0,
+            })],
+        })
+        captured = {}
+
+        class FakeInvoices:
+            ids = [1]
+
+            def __bool__(self):
+                return True
+
+            def action_post(self):
+                return True
+
+        class FakePaymentRegister:
+
+            def action_create_payments(self):
+                return True
+
+        def fake_button_validate(pickings):
+            captured['hf_bypass_signature'] = pickings.env.context.get('hf_bypass_signature')
+            vals = {'state': 'done'}
+            if captured['hf_bypass_signature'] and 'hf_signature_bypassed' in pickings._fields:
+                vals['hf_signature_bypassed'] = True
+            pickings.write(vals)
+            return True
+
+        def fake_create(payment_register_model, vals):
+            return FakePaymentRegister()
+
+        with patch.object(type(self.env['stock.picking']), 'button_validate', new=fake_button_validate), \
+             patch.object(type(self.env['sale.order']), '_create_invoices', return_value=FakeInvoices()), \
+             patch.object(type(self.env['account.payment.register']), 'create', new=fake_create):
+            order.action_fots_buy_and_go()
+
+        self.assertEqual(order.state, 'sale')
+        self.assertTrue(order.picking_ids)
+        self.assertEqual(order.picking_ids.filtered(lambda p: p.state == 'done'), order.picking_ids)
+        self.assertTrue(captured.get('hf_bypass_signature'))
+        if 'hf_progress_state' in order.picking_ids._fields:
+            self.assertEqual(order.picking_ids[:1].hf_progress_state, 'delivered')
