@@ -23,13 +23,18 @@
                 <button name="action_hf_set_receipt_dispatched"
                         string="Set as Dispatched"
                         type="object"
-                        class="btn-secondary"
-                        invisible="picking_type_code != 'incoming' or state == 'done' or hf_progress_state not in ('placed', 'processed')"/>
+                        class="oe_highlight"
+                        invisible="picking_type_code != 'incoming' or state != 'assigned' or hf_progress_state != 'processed'"/>
                 <button name="action_hf_process_receipt"
                         string="Process Receipt"
                         type="object"
                         class="oe_highlight"
                         invisible="picking_type_code != 'incoming' or state == 'done' or hf_progress_state != 'dispatched'"/>
+                <button name="action_hf_internal_set_dispatched"
+                        string="Set as Dispatched"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="picking_type_code != 'internal' or state != 'assigned' or hf_progress_state != 'processed'"/>
                 <button name="action_hf_ship_goods"
                         string="Ship Goods"
                         type="object"
@@ -40,6 +45,11 @@
                         type="object"
                         class="oe_highlight"
                         invisible="picking_type_code != 'internal' or hf_progress_state == 'delivered' or (not hf_transit_receipt_picking_id and not hf_transit_source_picking_id)"/>
+                <button name="action_hf_out_set_dispatched"
+                        string="Set as Dispatched"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="picking_type_code != 'outgoing' or state != 'assigned' or hf_progress_state != 'processed'"/>
                 <button name="action_hf_out_for_delivery"
                         string="Out for Delivery"
                         type="object"
@@ -54,20 +64,14 @@
             <xpath expr="//field[@name='state'][@widget='statusbar'][@invisible=&quot;picking_type_code != 'incoming'&quot;]" position="replace">
                 <field name="state"
                        widget="statusbar"
-                       invisible="picking_type_code != 'incoming'"
                        statusbar_visible="draft,assigned,done"/>
-                <field name="hf_progress_state"
-                       widget="statusbar"
-                       statusbar_visible="placed,processed,dispatched,delivered"/>
             </xpath>
-            <xpath expr="//field[@name='state'][@widget='statusbar'][@invisible=&quot;picking_type_code == 'incoming'&quot;]" position="replace">
-                <field name="state"
-                       widget="statusbar"
-                       invisible="picking_type_code == 'incoming'"
-                       statusbar_visible="draft,confirmed,assigned,done"/>
+            <xpath expr="//field[@name='state'][@widget='statusbar'][@invisible=&quot;picking_type_code == 'incoming'&quot;]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+             <xpath expr="//field[@name='state'][@widget='statusbar']" position="after">
                 <field name="hf_progress_state"
-                       widget="statusbar"
-                       invisible="picking_type_code == 'incoming'"
+                       widget="statusbar" readonly="1"
                        statusbar_visible="placed,processed,dispatched,delivered"/>
             </xpath>
             <xpath expr="//sheet" position="inside">
@@ -79,6 +83,17 @@
                 <field name="hf_processed_at" invisible="1"/>
                 <field name="hf_dispatched_at" invisible="1"/>
                 <field name="hf_delivered_at" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//button[@name='button_validate' and contains(@class, 'oe_highlight')]" position="attributes">
+                <attribute name="string">Set as Delivered</attribute>
+                <attribute name="invisible">(state == 'done' and hf_progress_state == 'delivered') or picking_type_code != 'incoming'</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_validate' and contains(@class, 'o_btn_validate')]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm']" position="attributes">
+                <attribute name="string">Validate</attribute>
             </xpath>
         </field>
     </record>

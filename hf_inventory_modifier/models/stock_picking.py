@@ -21,7 +21,6 @@ class StockPicking(models.Model):
         default='placed',
         copy=False,
         index=True,
-        readonly=True,
         tracking=True,
     )
     hf_placed_at = fields.Datetime(
@@ -382,3 +381,19 @@ class StockPicking(models.Model):
                 })
         self._hf_mark_done_progress_from_validate()
         return res
+
+    def action_confirm(self):
+        res = super(StockPicking, self).action_confirm()
+        for picking in self:
+            picking.hf_progress_state = 'processed'
+        return res
+
+    def action_hf_out_set_dispatched(self):
+        receipts = self.filtered(lambda picking: picking.picking_type_code == 'outgoing')
+        receipts._hf_set_progress_state('dispatched')
+        return True
+
+    def action_hf_internal_set_dispatched(self):
+        receipts = self.filtered(lambda picking: picking.picking_type_code == 'internal')
+        receipts._hf_set_progress_state('dispatched')
+        return True
