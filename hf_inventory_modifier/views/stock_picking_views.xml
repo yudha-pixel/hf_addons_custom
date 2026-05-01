@@ -39,7 +39,7 @@
                         string="Ship Goods"
                         type="object"
                         class="oe_highlight"
-                        invisible="picking_type_code != 'internal' or state == 'done' or hf_progress_state == 'delivered' or hf_transit_receipt_picking_id"/>
+                        invisible="picking_type_code != 'internal' or state != 'assigned' or hf_progress_state != 'dispatched' or hf_transit_receipt_picking_id"/>
                 <button name="action_hf_confirm_received"
                         string="Confirm Received"
                         type="object"
