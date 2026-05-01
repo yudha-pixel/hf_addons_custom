@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Heritage Foods - Inventory Modifier',
-    'version': '1.1.1',
+    'version': '1.1.2',
     'category': 'Inventory/Stock',
     'summary': 'Auto-correct internal transfer operation type based on source location warehouse',
     'author': 'Yudha/Heritage Foods Development Team',

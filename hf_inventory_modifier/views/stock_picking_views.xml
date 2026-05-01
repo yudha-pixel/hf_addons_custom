@@ -13,16 +13,72 @@
         </field>
     </record>
 
-    <!-- Progress badge on form view -->
+    <!-- Progress statusbar on form view -->
     <record id="hf_inventory_modifier_view_picking_form_inherit_progress" model="ir.ui.view">
         <field name="name">hf.inventory.modifier.stock.picking.form.progress</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet//div[hasclass('oe_title')]/h1" position="after">
-                <div class="mt8">
-                    <field name="hf_progress_state" widget="badge"/>
-                </div>
+            <xpath expr="//header/button[@name='action_assign']" position="after">
+                <button name="action_hf_set_receipt_dispatched"
+                        string="Set as Dispatched"
+                        type="object"
+                        class="btn-secondary"
+                        invisible="picking_type_code != 'incoming' or state == 'done' or hf_progress_state not in ('placed', 'processed')"/>
+                <button name="action_hf_process_receipt"
+                        string="Process Receipt"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="picking_type_code != 'incoming' or state == 'done' or hf_progress_state != 'dispatched'"/>
+                <button name="action_hf_ship_goods"
+                        string="Ship Goods"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="picking_type_code != 'internal' or state == 'done' or hf_progress_state == 'delivered' or hf_transit_receipt_picking_id"/>
+                <button name="action_hf_confirm_received"
+                        string="Confirm Received"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="picking_type_code != 'internal' or hf_progress_state == 'delivered' or (not hf_transit_receipt_picking_id and not hf_transit_source_picking_id)"/>
+                <button name="action_hf_out_for_delivery"
+                        string="Out for Delivery"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="picking_type_code != 'outgoing' or state == 'done' or hf_progress_state == 'delivered'"/>
+                <button name="action_hf_mark_delivered"
+                        string="Mark Delivered"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="picking_type_code != 'outgoing' or state != 'done' or hf_progress_state == 'delivered'"/>
+            </xpath>
+            <xpath expr="//field[@name='state'][@widget='statusbar'][@invisible=&quot;picking_type_code != 'incoming'&quot;]" position="replace">
+                <field name="state"
+                       widget="statusbar"
+                       invisible="picking_type_code != 'incoming'"
+                       statusbar_visible="draft,assigned,done"/>
+                <field name="hf_progress_state"
+                       widget="statusbar"
+                       statusbar_visible="placed,processed,dispatched,delivered"/>
+            </xpath>
+            <xpath expr="//field[@name='state'][@widget='statusbar'][@invisible=&quot;picking_type_code == 'incoming'&quot;]" position="replace">
+                <field name="state"
+                       widget="statusbar"
+                       invisible="picking_type_code == 'incoming'"
+                       statusbar_visible="draft,confirmed,assigned,done"/>
+                <field name="hf_progress_state"
+                       widget="statusbar"
+                       invisible="picking_type_code == 'incoming'"
+                       statusbar_visible="placed,processed,dispatched,delivered"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <field name="hf_signature_bypassed" invisible="1"/>
+                <field name="hf_transit_source_picking_id" invisible="1"/>
+                <field name="hf_transit_receipt_picking_id" invisible="1"/>
+                <field name="hf_final_location_dest_id" invisible="1"/>
+                <field name="hf_placed_at" invisible="1"/>
+                <field name="hf_processed_at" invisible="1"/>
+                <field name="hf_dispatched_at" invisible="1"/>
+                <field name="hf_delivered_at" invisible="1"/>
             </xpath>
         </field>
     </record>
